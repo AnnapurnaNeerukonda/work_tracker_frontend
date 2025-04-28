@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import AddClient from './components/Add_client';
+import ClientList from './components/ClientList';
+import AppNavbar from './components/navabar';
+import EmployeeList from './components/employees'; 
+import EmployeeWorkDetails from './components/EmployeeWorkDetails'; 
+import Reports from './components/reports';
+import AddEmployeeForm from './components/Add_employee';
+import AddWorkForm from './components/Add_work_toclient';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard'; // ⬅️ import it at the top
+
+
+const AppRoutes = () => {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/"];
+
+  return (
+    <>
+      {!hideNavbarRoutes.includes(location.pathname) && <AppNavbar />}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/add-client" element={<AddClient />} />
+        <Route path="/view-clients" element={<ClientList />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/view-employees" element={<EmployeeList />} />
+        <Route path="/employee/:id/work" element={<EmployeeWorkDetails />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/addEmployee" element={<AddEmployeeForm />} />
+        <Route path="/add-work" element={<AddWorkForm />} />
+      </Routes>
+    </>
+  );
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AppRoutes />
+    </Router>
   );
 }
 
