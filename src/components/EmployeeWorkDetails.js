@@ -24,7 +24,7 @@ const EmployeeWorkDetails = () => {
     const fetchWork = async () => {
       try {
         console.log(id);
-        const res = await axios.get(`http://localhost:5000/employee/${id}/work`);
+        const res = await axios.get(`https://work-tracker-backend-1.onrender.com/employee/${id}/work`);
         console.log(res.data);
         setWorkList(res.data);
         setFilteredWorkList(res.data);

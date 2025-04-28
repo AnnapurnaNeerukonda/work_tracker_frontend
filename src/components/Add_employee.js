@@ -47,7 +47,7 @@ const AddEmployeeForm = () => {
     });
 
     try {
-      const res = await axios.post('http://localhost:5000/add-employee', data);
+      const res = await axios.post('https://work-tracker-backend-1.onrender.com/add-employee', data);
       alert('Employee added successfully');
       console.log(res.data);
 

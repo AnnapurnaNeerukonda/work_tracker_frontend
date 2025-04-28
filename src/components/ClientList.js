@@ -24,7 +24,7 @@ const ClientList = () => {
   const [statusUpdates, setStatusUpdates] = useState({});
   const navigate = useNavigate();
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
 
   useEffect(() => {
     fetchClients();

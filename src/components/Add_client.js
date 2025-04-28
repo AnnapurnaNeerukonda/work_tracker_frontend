@@ -31,7 +31,7 @@ const AddClient = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/employees");
+        const res = await axios.get("https://work-tracker-backend-1.onrender.com/employees");
         setEmployees(res.data);
       } catch (err) {
         console.error("Error fetching employees:", err);
@@ -97,7 +97,7 @@ const AddClient = () => {
     formData.append("works", JSON.stringify(works));
 
     try {
-      await axios.post("http://localhost:5000/clients", formData, {
+      await axios.post("https://work-tracker-backend-1.onrender.com/clients", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

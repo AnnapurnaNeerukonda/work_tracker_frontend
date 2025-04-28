@@ -17,7 +17,7 @@ const AddWorkForm = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/clients');
+        const res = await axios.get('https://work-tracker-backend-1.onrender.com/clients');
         const clientOptions = res.data.map(client => ({
           label: client.name,
           value: client._id,
@@ -30,7 +30,7 @@ const AddWorkForm = () => {
    
     const fetchEmployees = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/employees');
+        const res = await axios.get('https://work-tracker-backend-1.onrender.com/employees');
         const employeeOptions = res.data.map(employee => ({
           label: employee.name,
           value: employee._id,
@@ -61,7 +61,7 @@ const AddWorkForm = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/add-work', workData);
+      await axios.post('https://work-tracker-backend-1.onrender.com/add-work', workData);
       setMessage('Work added successfully!');
       setMessageType('success');
 
