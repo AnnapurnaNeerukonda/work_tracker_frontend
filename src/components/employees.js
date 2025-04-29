@@ -11,7 +11,10 @@ const EmployeeList = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const res = await axios.get('https://work-tracker-backend-1.onrender.com/employees');
+        // const BASE_URL = "http://localhost:5000";
+
+        const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
+        const res = await axios.get(`${BASE_URL}/employees`);
         console.log(res.data);  // Log the full response to check the structure
         setAllEmployees(res.data);
       } catch (err) {

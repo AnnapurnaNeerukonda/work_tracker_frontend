@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -25,7 +25,6 @@ const ClientList = () => {
   const navigate = useNavigate();
 
   const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
-
   useEffect(() => {
     fetchClients();
   }, []);
@@ -187,6 +186,10 @@ const ClientList = () => {
                   <th>Status</th>
                   <th>Assigned Date</th>
                   <th>Completed Date</th>
+                  <th>Fee Estimation</th>
+                  <th>Amount</th>
+                  <th>Discount</th>
+                  <th>Total Bill</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -223,6 +226,10 @@ const ClientList = () => {
                           'N/A'
                         )}
                       </td>
+                      <td>{work.fee_estimation || 'N/A'}</td>
+                      <td>{work.amount || 'N/A'}</td>
+                      <td>{work.discount || 'N/A'}</td>
+                      <td>{work.total_bill || 'N/A'}</td>
                       <td>
                         {work.status === 'pending documents' && (
                           <>

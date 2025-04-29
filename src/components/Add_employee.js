@@ -47,7 +47,10 @@ const AddEmployeeForm = () => {
     });
 
     try {
-      const res = await axios.post('https://work-tracker-backend-1.onrender.com/add-employee', data);
+      // const BASE_URL = "http://localhost:5000";
+
+      const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
+      const res = await axios.post(`${BASE_URL}/add-employee`, data);
       alert('Employee added successfully');
       console.log(res.data);
 

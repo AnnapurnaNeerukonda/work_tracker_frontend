@@ -8,16 +8,22 @@ const AddWorkForm = () => {
   const [employeeName, setEmployeeName] = useState(null);
   const [workDescription, setWorkDescription] = useState('');
   const [pendingDocuments, setPendingDocuments] = useState(false);
+  const [workAssignedDate, setWorkAssignedDate] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [feeEstimation, setFeeEstimation] = useState('');
   const [clients, setClients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState(''); // 'success' or 'danger'
+  const [messageType, setMessageType] = useState('');
   const navigate = useNavigate();
+
+  // const BASE_URL = "http://localhost:5000";
+      const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
 
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const res = await axios.get('https://work-tracker-backend-1.onrender.com/clients');
+        const res = await axios.get(`${BASE_URL}/clients`);
         const clientOptions = res.data.map(client => ({
           label: client.name,
           value: client._id,
@@ -27,10 +33,10 @@ const AddWorkForm = () => {
         console.error('Error fetching clients', err);
       }
     };
-   
+
     const fetchEmployees = async () => {
       try {
-        const res = await axios.get('https://work-tracker-backend-1.onrender.com/employees');
+        const res = await axios.get(`${BASE_URL}/employees`);
         const employeeOptions = res.data.map(employee => ({
           label: employee.name,
           value: employee._id,
@@ -44,12 +50,14 @@ const AddWorkForm = () => {
     fetchClients();
     fetchEmployees();
   }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/");
     }
   }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,10 +66,13 @@ const AddWorkForm = () => {
       employee_id: employeeName?.value,
       work_description: workDescription,
       pending_documents: pendingDocuments,
+      work_assigned_date: workAssignedDate,
+      due_date: dueDate,
+      fee_estimation: feeEstimation,
     };
 
     try {
-      await axios.post('https://work-tracker-backend-1.onrender.com/add-work', workData);
+      await axios.post(`${BASE_URL}/add-work`, workData);
       setMessage('Work added successfully!');
       setMessageType('success');
 
@@ -70,6 +81,9 @@ const AddWorkForm = () => {
       setEmployeeName(null);
       setWorkDescription('');
       setPendingDocuments(false);
+      setWorkAssignedDate('');
+      setDueDate('');
+      setFeeEstimation('');
     } catch (err) {
       console.error(err);
       setMessage('Error adding work.');
@@ -112,6 +126,47 @@ const AddWorkForm = () => {
                 placeholder="Enter work details"
                 value={workDescription}
                 onChange={(e) => setWorkDescription(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Work Assigned Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={workAssignedDate}
+                onChange={(e) => {
+                  setWorkAssignedDate(e.target.value);
+                  // Optional: if workAssignedDate changes, clear dueDate if it's before new assigned date
+                  if (dueDate && e.target.value > dueDate) {
+                    setDueDate('');
+                  }
+                }}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Due Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={dueDate}
+                min={workAssignedDate || undefined}
+                onChange={(e) => setDueDate(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Fee Estimation (Amount)</label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Enter amount"
+                value={feeEstimation}
+                onChange={(e) => setFeeEstimation(e.target.value)}
                 required
               />
             </div>

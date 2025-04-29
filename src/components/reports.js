@@ -24,7 +24,9 @@ const Reports = () => {
   }, [navigate]);
   const filterData = async () => {
     try {
-      const res = await axios.get("https://work-tracker-backend-1.onrender.com/reports", {
+      const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
+      // const BASE_URL = "http://localhost:5000";
+      const res = await axios.get(`${BASE_URL}/reports`, {
         params: {
           status: statusFilter,
           fromDate,

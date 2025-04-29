@@ -10,7 +10,9 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://work-tracker-backend-1.onrender.com/login", {
+      const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
+      // const BASE_URL = "http://localhost:5000";
+      const res = await axios.post(`${BASE_URL}/login`, {
         email,
         password,
       });
@@ -89,47 +91,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
-    // <div>
-    // <h2 className="mb-1 mt-4 text-center">CA SAI SUNEEL & Co CHARTED ACCOUNTS </h2>
-    // <img
-    //         className="d-block w-100"
-    //         src="/images/company.jpg"
-    //         alt="First slide"
-    //       />
-    // <div className="container d-flex justify-content-center align-items-center vh-100">
-    //   <div className="card shadow p-4" style={{ width: "100%", maxWidth: "400px" }}>
-    //     <h2 className="mb-4 text-center">Login to Work Tracker </h2>
-    //     <form onSubmit={handleLogin}>
-    //       <div className="mb-3">
-    //         <label className="form-label">Email address</label>
-    //         <input
-    //           type="email"
-    //           className="form-control"
-    //           value={email}
-    //           onChange={(e) => setEmail(e.target.value)}
-    //           placeholder="Enter your email"
-    //           required
-    //         />
-    //       </div>
-    //       <div className="mb-4">
-    //         <label className="form-label">Password</label>
-    //         <input
-    //           type="password"
-    //           className="form-control"
-    //           value={password}
-    //           onChange={(e) => setPassword(e.target.value)}
-    //           placeholder="Enter your password"
-    //           required
-    //         />
-    //       </div>
-    //       <button type="submit" className="btn btn-primary w-100">
-    //         Login
-    //       </button>
-    //     </form>
-    //   </div>
-    // </div>
-    // </div>
   );
 };
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AddClient = () => {
@@ -17,21 +17,26 @@ const AddClient = () => {
     employee_id: "",
     employee_name: "",
   });
+
   const navigate = useNavigate();
+  // const BASE_URL = "http://localhost:5000";
+      const BASE_URL = 'https://work-tracker-backend-1.onrender.com';
 
   const [employees, setEmployees] = useState([]);
   const [works, setWorks] = useState([
     {
       work_description: "",
       work_assigned_date: "",
+      due_date: "",
       pending_documents: false,
+      fee_estimation: "",
     },
   ]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const res = await axios.get("https://work-tracker-backend-1.onrender.com/employees");
+        const res = await axios.get(`${BASE_URL}/employees`);
         setEmployees(res.data);
       } catch (err) {
         console.error("Error fetching employees:", err);
@@ -40,12 +45,14 @@ const AddClient = () => {
     };
     fetchEmployees();
   }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/");
     }
   }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
@@ -82,7 +89,9 @@ const AddClient = () => {
       {
         work_description: "",
         work_assigned_date: "",
+        due_date: "",
         pending_documents: false,
+        fee_estimation: "",
       },
     ]);
   };
@@ -97,11 +106,15 @@ const AddClient = () => {
     formData.append("works", JSON.stringify(works));
 
     try {
-      await axios.post("https://work-tracker-backend-1.onrender.com/clients", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        `${BASE_URL}/clients`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       alert("Client added successfully");
       setClientDetails({
@@ -122,7 +135,9 @@ const AddClient = () => {
         {
           work_description: "",
           work_assigned_date: "",
+          due_date: "",
           pending_documents: false,
+          fee_estimation: "",
         },
       ]);
     } catch (err) {
@@ -131,10 +146,18 @@ const AddClient = () => {
     }
   };
 
+  // Get tomorrow's date in YYYY-MM-DD format
+  const getTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split("T")[0];
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4 text-primary">Add New Client</h2>
       <form onSubmit={handleSubmit}>
+        {/* Client Details */}
         {[
           { label: "Name", name: "name" },
           { label: "Business Name", name: "business_name" },
@@ -154,11 +177,12 @@ const AddClient = () => {
               value={clientDetails[name]}
               onChange={handleChange}
               className="form-control"
-              required={name !== "gstin_no"}
+              required={["name", "reference_name", "phone_number"].includes(name)}
             />
           </div>
         ))}
 
+        {/* Upload Picture */}
         <div className="mb-3">
           <label className="form-label">Upload Client Picture</label>
           <input
@@ -169,6 +193,7 @@ const AddClient = () => {
           />
         </div>
 
+        {/* Select Employee */}
         <div className="mb-3">
           <label className="form-label">Assign to Employee</label>
           <select
@@ -187,6 +212,7 @@ const AddClient = () => {
           </select>
         </div>
 
+        {/* Work Assignments */}
         <h5 className="mt-4 text-primary">Work Assignments</h5>
         {works.map((work, index) => (
           <div key={index} className="border p-3 rounded mb-3">
@@ -214,6 +240,35 @@ const AddClient = () => {
               />
             </div>
 
+            {/* Due Date Field (only future dates allowed) */}
+            <div className="mb-2">
+              <label className="form-label">Due Date (Target)</label>
+              <input
+                type="date"
+                name="due_date"
+                min={getTomorrowDate()}
+                value={work.due_date}
+                onChange={(e) => handleWorkChange(index, e)}
+                className="form-control"
+                required
+              />
+            </div>
+
+            {/* Fee Estimation Field */}
+            <div className="mb-2">
+              <label className="form-label">Fee Estimation (Amount)</label>
+              <input
+                type="number"
+                name="fee_estimation"
+                value={work.fee_estimation}
+                onChange={(e) => handleWorkChange(index, e)}
+                className="form-control"
+                placeholder="Enter amount in ₹"
+                min="0"
+              />
+            </div>
+
+            {/* Pending Documents Checkbox */}
             <div className="form-check mb-2">
               <input
                 className="form-check-input"
@@ -223,17 +278,24 @@ const AddClient = () => {
                 onChange={(e) => handleWorkChange(index, e)}
                 id={`pendingDocs${index}`}
               />
-              <label className="form-check-label" htmlFor={`pendingDocs${index}`}>
+              <label
+                className="form-check-label"
+                htmlFor={`pendingDocs${index}`}
+              >
                 Pending Documents
               </label>
             </div>
           </div>
         ))}
 
-        <button type="button" className="btn btn-secondary" onClick={addWorkField}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={addWorkField}
+        >
           + Add Another Work
         </button>
-        <br></br>
+        <br />
         <button type="submit" className="btn btn-primary mt-4 mb-5">
           Add Client
         </button>

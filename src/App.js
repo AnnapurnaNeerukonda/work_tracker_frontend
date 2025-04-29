@@ -9,7 +9,7 @@ import AddEmployeeForm from './components/Add_employee';
 import AddWorkForm from './components/Add_work_toclient';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard'; // ⬅️ import it at the top
-
+import Informed from './components/InformedPayment';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -28,6 +28,7 @@ const AppRoutes = () => {
         <Route path="/reports" element={<Reports />} />
         <Route path="/addEmployee" element={<AddEmployeeForm />} />
         <Route path="/add-work" element={<AddWorkForm />} />
+        <Route path='/informed-payments' element={<Informed/>}/>
       </Routes>
     </>
   );
